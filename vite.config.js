@@ -5,5 +5,6 @@ import react from '@vitejs/plugin-react';
 // quando o site não está na raiz do domínio.
 export default defineConfig({
   base: './',
+export default defineConfig({
   plugins: [react()],
 });

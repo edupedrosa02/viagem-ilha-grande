@@ -5,6 +5,7 @@ Aplicação React (Vite + Tailwind) com:
 - contagem regressiva da viagem
 - roteiro interativo por dia
 - segunda página com mapa interativo de pontos da viagem
+Aplicação React (Vite + Tailwind) com contagem regressiva e roteiro interativo da viagem.
 
 ## Como subir o projeto
 
