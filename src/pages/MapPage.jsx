@@ -1,153 +1,104 @@
-import React, { useMemo, useState } from 'react';
-import { MapContainer, TileLayer, CircleMarker, Popup } from 'react-leaflet';
-
-const DAY_OPTIONS = [
-  { id: 'all', label: 'Todos os dias' },
-  { id: '14', label: 'Dia 14/04 (Terça)' },
-  { id: '15', label: 'Dia 15/04 (Quarta)' },
-  { id: '16', label: 'Dia 16/04 (Quinta)' },
-  { id: '17', label: 'Dia 17/04 (Sexta)' },
-  { id: '18', label: 'Dia 18/04 (Sábado)' },
-  { id: '19', label: 'Dia 19/04 (Domingo)' },
-];
+import React, { useState } from 'react';
+import { Anchor, Camera, UtensilsCrossed, Waves, Mountain, Ship } from 'lucide-react';
 
 const spots = [
   {
     id: 'abraao',
     name: 'Vila do Abraão',
-    tip: 'Chegada, centrinho e ponto de saída de passeios.',
-    position: [-23.1406, -44.166],
-    days: ['14', '18', '19'],
+    tip: 'Base da viagem, restaurantes e saída dos passeios.',
+    top: '58%',
+    left: '36%',
+    icon: Anchor,
   },
   {
     id: 'julia',
-    name: 'Praia da Júlia / Abraãozinho',
-    tip: 'Passeio leve no dia de chegada.',
-    position: [-23.139, -44.1594],
-    days: ['14'],
-  },
-  {
-    id: 'lagoa-azul',
-    name: 'Lagoa Azul',
-    tip: 'Parada clássica para mergulho na meia volta.',
-    position: [-23.0992, -44.2015],
-    days: ['15'],
-  },
-  {
-    id: 'feiticeira',
-    name: 'Praia da Feiticeira',
-    tip: 'Uma das paradas do passeio de barco.',
-    position: [-23.1642, -44.1552],
-    days: ['15'],
+    name: 'Praia da Júlia',
+    tip: 'Caminhada curta para começar o dia.',
+    top: '54%',
+    left: '32%',
+    icon: Waves,
   },
   {
     id: 'lopes',
     name: 'Lopes Mendes',
-    tip: 'Dia de praia principal com trilha/barco-táxi.',
-    position: [-23.1777, -44.1407],
-    days: ['16'],
+    tip: 'Mar cristalino e praia longa para relaxar.',
+    top: '70%',
+    left: '70%',
+    icon: Mountain,
   },
   {
-    id: 'ilhas',
-    name: 'Ilhas Paradisíacas',
-    tip: 'Roteiro de ilhas no passeio do dia 17.',
-    position: [-23.0984, -44.1802],
-    days: ['17'],
+    id: 'lagoa-azul',
+    name: 'Lagoa Azul',
+    tip: 'Parada clássica para mergulho e fotos.',
+    top: '22%',
+    left: '22%',
+    icon: Camera,
   },
   {
-    id: 'preta',
-    name: 'Praia Preta',
-    tip: 'Opção de trilha curta no dia coringa.',
-    position: [-23.1468, -44.1714],
-    days: ['18'],
+    id: 'feiticeira',
+    name: 'Praia da Feiticeira',
+    tip: 'Perfeita para incluir no roteiro de barco.',
+    top: '48%',
+    left: '52%',
+    icon: Ship,
+  },
+  {
+    id: 'lua-e-mar',
+    name: 'Lua e Mar',
+    tip: 'Nosso jantar romântico favorito.',
+    top: '60%',
+    left: '40%',
+    icon: UtensilsCrossed,
   },
 ];
 
 export default function MapPage() {
-  const [selectedDay, setSelectedDay] = useState('all');
-  const [selectedSpotId, setSelectedSpotId] = useState(spots[0].id);
-
-  const visibleSpots = useMemo(() => {
-    if (selectedDay === 'all') return spots;
-    return spots.filter((spot) => spot.days.includes(selectedDay));
-  }, [selectedDay]);
-
-  const activeSpot =
-    visibleSpots.find((spot) => spot.id === selectedSpotId) ?? visibleSpots[0] ?? null;
+  const [activeSpot, setActiveSpot] = useState(spots[0]);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
       <div className="mb-6 text-center">
-        <h2 className="text-3xl font-bold text-slate-800">Mapa Interativo Real</h2>
-        <p className="mt-2 text-slate-500">Selecione o dia para mostrar somente os lugares daquele roteiro.</p>
-      </div>
-
-      <div className="mb-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-        <label htmlFor="day-filter" className="mb-2 block text-sm font-semibold text-slate-700">
-          Filtrar pins por dia
-        </label>
-        <select
-          id="day-filter"
-          value={selectedDay}
-          onChange={(event) => setSelectedDay(event.target.value)}
-          className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-700 outline-none ring-blue-200 focus:ring"
-        >
-          {DAY_OPTIONS.map((day) => (
-            <option key={day.id} value={day.id}>
-              {day.label}
-            </option>
-          ))}
-        </select>
+        <h2 className="text-3xl font-bold text-slate-800">Mapa Interativo</h2>
+        <p className="mt-2 text-slate-500">Clique nos ícones para explorar os lugares do nosso roteiro.</p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-[2fr_1fr]">
-        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm">
-          <MapContainer
-            center={[-23.135, -44.17]}
-            zoom={12}
-            scrollWheelZoom
-            className="h-[450px] w-full"
-          >
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-
-            {visibleSpots.map((spot) => (
-              <CircleMarker
+        <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/5/57/Ilha_Grande%2C_Rio_de_Janeiro%2C_Brazil.jpg"
+            alt="Mapa da Ilha Grande"
+            className="h-full min-h-[420px] w-full object-cover"
+          />
+          {spots.map((spot) => {
+            const Icon = spot.icon;
+            return (
+              <button
                 key={spot.id}
-                center={spot.position}
-                radius={activeSpot?.id === spot.id ? 11 : 8}
-                pathOptions={{
-                  color: activeSpot?.id === spot.id ? '#1d4ed8' : '#334155',
-                  fillColor: activeSpot?.id === spot.id ? '#2563eb' : '#64748b',
-                  fillOpacity: 0.9,
-                }}
-                eventHandlers={{ click: () => setSelectedSpotId(spot.id) }}
+                type="button"
+                onClick={() => setActiveSpot(spot)}
+                className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-2 p-2 shadow-md transition ${
+                  activeSpot.id === spot.id
+                    ? 'border-blue-600 bg-blue-600 text-white scale-110'
+                    : 'border-white bg-white/90 text-blue-700 hover:scale-110'
+                }`}
+                style={{ top: spot.top, left: spot.left }}
+                aria-label={spot.name}
               >
-                <Popup>
-                  <strong>{spot.name}</strong>
-                  <br />
-                  {spot.tip}
-                </Popup>
-              </CircleMarker>
-            ))}
-          </MapContainer>
+                <Icon className="h-4 w-4" />
+              </button>
+            );
+          })}
         </div>
 
         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <h3 className="text-sm font-semibold uppercase tracking-wide text-blue-700">Lugar selecionado</h3>
-          {activeSpot ? (
-            <>
-              <p className="mt-3 text-2xl font-bold text-slate-800">{activeSpot.name}</p>
-              <p className="mt-2 text-slate-600">{activeSpot.tip}</p>
-              <p className="mt-4 text-sm text-slate-500">
-                Dias: {activeSpot.days.map((day) => ` ${day}/04`).join(',')}
-              </p>
-            </>
-          ) : (
-            <p className="mt-3 text-slate-600">Sem pontos para o dia selecionado.</p>
-          )}
+          <p className="mt-3 text-2xl font-bold text-slate-800">{activeSpot.name}</p>
+          <p className="mt-2 text-slate-600">{activeSpot.tip}</p>
+          <ul className="mt-5 space-y-2 text-sm text-slate-500">
+            <li>• Use no celular para planejar o dia rápido.</li>
+            <li>• Dá para adicionar horários por ponto depois.</li>
+            <li>• Se quiser, próximo passo é trocar por mapa real (Leaflet).</li>
+          </ul>
         </div>
       </div>
     </div>
