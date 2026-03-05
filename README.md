@@ -39,3 +39,6 @@ Fluxo:
 npm run build
 npm run preview
 ```
+
+
+> Dica: para garantir a imagem do gênio em produção, adicione o arquivo em `public/genio.png`.
