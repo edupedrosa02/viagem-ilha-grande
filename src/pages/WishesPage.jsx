@@ -78,15 +78,18 @@ export default function WishesPage() {
       </div>
 
       {unlocked && (
-        <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-900/55 p-4 backdrop-blur-[2px]">
-          <div className="relative w-full max-w-4xl rounded-3xl border border-indigo-200 bg-gradient-to-br from-indigo-100 via-slate-100 to-indigo-50 p-5 shadow-2xl md:p-8">
-            <div className="relative grid items-center gap-6 md:grid-cols-[1fr_1.2fr]">
+        <div className="fixed inset-0 z-40 overflow-y-auto bg-slate-900/55 p-3 backdrop-blur-[2px] md:flex md:items-center md:justify-center md:p-4">
+          <div
+            className="relative mx-auto w-full max-w-4xl rounded-3xl border border-indigo-200 bg-gradient-to-br from-indigo-100 via-slate-100 to-indigo-50 p-4 shadow-2xl md:p-8"
+            style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}
+          >
+            <div className="relative grid items-start gap-6 md:grid-cols-[1fr_1.2fr]">
               <div className="relative flex justify-center">
                 {!genieImageFailed ? (
                   <img
                     src={currentGenieSrc}
                     alt="Gênio da lâmpada"
-                    className="max-h-[440px] w-auto object-contain"
+                    className="max-h-[300px] w-auto object-contain sm:max-h-[380px] md:max-h-[440px]"
                     onError={handleGenieImageError}
                   />
                 ) : (
@@ -95,7 +98,7 @@ export default function WishesPage() {
                   </p>
                 )}
 
-                <div className="absolute left-1/2 top-6 w-72 -translate-x-1/2 rounded-lg bg-white/90 px-4 py-3 text-center font-semibold text-slate-700 shadow md:left-[72%] md:top-12 md:w-80 md:-translate-x-0">
+                <div className="absolute left-1/2 top-2 w-[90%] max-w-xs -translate-x-1/2 rounded-lg bg-white/90 px-3 py-2 text-center text-sm font-semibold text-slate-700 shadow sm:text-base md:left-[72%] md:top-12 md:w-80 md:-translate-x-0">
                   O que você gostaria que acontecesse nessa viagem?
                   <span className="absolute -left-3 top-10 hidden h-0 w-0 border-b-[10px] border-r-[14px] border-t-[10px] border-b-transparent border-r-white/90 border-t-transparent md:block" />
                 </div>
@@ -110,13 +113,13 @@ export default function WishesPage() {
                   value={wish}
                   onChange={(event) => setWish(event.target.value)}
                   placeholder="Escreva aqui..."
-                  className="min-h-52 w-full rounded-2xl border-2 border-amber-300 bg-white px-5 py-4 text-lg text-slate-700 outline-none ring-amber-200 focus:ring"
+                  className="min-h-44 w-full rounded-2xl border-2 border-amber-300 bg-white px-5 py-4 text-base text-slate-700 outline-none ring-amber-200 focus:ring sm:min-h-52 sm:text-lg"
                 />
-                <div className="flex items-center gap-3">
+                <div className="sticky bottom-0 flex flex-wrap items-center gap-3 rounded-xl bg-white/90 p-2">
                   <button
                     type="submit"
                     disabled={loading || !wish.trim()}
-                    className="rounded-xl bg-amber-600 px-6 py-3 text-lg font-semibold text-white transition hover:bg-amber-700 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="rounded-xl bg-amber-600 px-5 py-3 text-base font-semibold text-white transition hover:bg-amber-700 disabled:cursor-not-allowed disabled:opacity-60 sm:px-6 sm:text-lg"
                   >
                     {loading ? 'Enviando...' : 'Enviar Desejo'}
                   </button>
