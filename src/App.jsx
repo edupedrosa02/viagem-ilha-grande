@@ -2,6 +2,7 @@ import React from 'react';
 import { HashRouter, NavLink, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import MapPage from './pages/MapPage';
+import WishesPage from './pages/WishesPage';
 
 function TabLink({ to, children }) {
   return (
@@ -23,11 +24,12 @@ export default function App() {
     <HashRouter>
       <div className="min-h-screen bg-slate-50 font-sans">
         <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
-          <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
+          <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2 px-4 py-3">
             <h1 className="text-sm font-bold uppercase tracking-wider text-slate-700 md:text-base">Viagem Ilha Grande</h1>
             <nav className="flex items-center gap-2">
               <TabLink to="/">Roteiro</TabLink>
               <TabLink to="/mapa">Mapa</TabLink>
+              <TabLink to="/desejos">Lâmpada</TabLink>
             </nav>
           </div>
         </header>
@@ -35,6 +37,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/mapa" element={<MapPage />} />
+          <Route path="/desejos" element={<WishesPage />} />
         </Routes>
 
         <footer className="py-8 text-center text-sm text-slate-400">
