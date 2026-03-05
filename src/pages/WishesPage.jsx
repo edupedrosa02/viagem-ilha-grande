@@ -56,7 +56,7 @@ export default function WishesPage() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10">
+    <div className="relative mx-auto max-w-3xl px-4 py-10">
       <div className="rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 via-orange-50 to-indigo-50 p-6 shadow-sm">
         <div className="mb-4 text-center">
           <h2 className="text-3xl font-bold text-amber-800">Lâmpada dos desejos</h2>
@@ -75,43 +75,65 @@ export default function WishesPage() {
         </div>
 
         <p className="mt-4 text-center text-sm text-amber-700">Cliques: {Math.min(clicks, 3)}/3</p>
-
-        {unlocked && (
-          <div className="mt-6 space-y-4">
-            <div className="rounded-xl border border-indigo-200 bg-white/80 p-4">
-              {!genieImageFailed ? (
-                <img
-                  src={currentGenieSrc}
-                  alt="Gênio da lâmpada"
-                  className="mx-auto max-h-80 w-auto transition-opacity duration-700"
-                  onError={handleGenieImageError}
-                />
-              ) : (
-                <p className="text-center text-sm text-indigo-700">
-                  Não consegui carregar a imagem do gênio. Coloque o arquivo em <code>public/genio.png</code>.
-                </p>
-              )}
-            </div>
-
-            <form onSubmit={submitWish} className="space-y-3">
-              <textarea
-                value={wish}
-                onChange={(event) => setWish(event.target.value)}
-                placeholder="O que você gostaria que acontecesse nessa viagem?"
-                className="min-h-28 w-full rounded-xl border border-amber-300 bg-white px-4 py-3 text-slate-700 outline-none ring-amber-200 focus:ring"
-              />
-              <button
-                type="submit"
-                disabled={loading || !wish.trim()}
-                className="rounded-lg bg-amber-600 px-4 py-2 font-semibold text-white transition hover:bg-amber-700 disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                {loading ? 'Enviando...' : 'Enviar Desejo'}
-              </button>
-              {status && <p className="text-sm text-slate-600">{status}</p>}
-            </form>
-          </div>
-        )}
       </div>
+
+      {unlocked && (
+        <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-900/55 p-4 backdrop-blur-[2px]">
+          <div className="relative w-full max-w-4xl rounded-3xl border border-indigo-200 bg-gradient-to-br from-indigo-100 via-slate-100 to-indigo-50 p-5 shadow-2xl md:p-8">
+            <div className="relative grid items-center gap-6 md:grid-cols-[1fr_1.2fr]">
+              <div className="relative flex justify-center">
+                {!genieImageFailed ? (
+                  <img
+                    src={currentGenieSrc}
+                    alt="Gênio da lâmpada"
+                    className="max-h-[440px] w-auto object-contain"
+                    onError={handleGenieImageError}
+                  />
+                ) : (
+                  <p className="rounded-xl bg-white/80 p-4 text-center text-sm text-indigo-700">
+                    Não consegui carregar a imagem do gênio. Coloque o arquivo em <code>public/genio.png</code>.
+                  </p>
+                )}
+
+                <div className="absolute left-1/2 top-6 w-72 -translate-x-1/2 rounded-lg bg-white/90 px-4 py-3 text-center font-semibold text-slate-700 shadow md:left-[72%] md:top-12 md:w-80 md:-translate-x-0">
+                  O que você gostaria que acontecesse nessa viagem?
+                  <span className="absolute -left-3 top-10 hidden h-0 w-0 border-b-[10px] border-r-[14px] border-t-[10px] border-b-transparent border-r-white/90 border-t-transparent md:block" />
+                </div>
+              </div>
+
+              <form onSubmit={submitWish} className="space-y-3">
+                <label htmlFor="wish" className="block text-lg font-semibold text-indigo-900">
+                  Seu desejo
+                </label>
+                <textarea
+                  id="wish"
+                  value={wish}
+                  onChange={(event) => setWish(event.target.value)}
+                  placeholder="Escreva aqui..."
+                  className="min-h-52 w-full rounded-2xl border-2 border-amber-300 bg-white px-5 py-4 text-lg text-slate-700 outline-none ring-amber-200 focus:ring"
+                />
+                <div className="flex items-center gap-3">
+                  <button
+                    type="submit"
+                    disabled={loading || !wish.trim()}
+                    className="rounded-xl bg-amber-600 px-6 py-3 text-lg font-semibold text-white transition hover:bg-amber-700 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {loading ? 'Enviando...' : 'Enviar Desejo'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setClicks(0)}
+                    className="rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-50"
+                  >
+                    Fechar
+                  </button>
+                </div>
+                {status && <p className="text-sm text-slate-600">{status}</p>}
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
