@@ -42,3 +42,11 @@ npm run preview
 
 
 > Dica: para garantir a imagem do gênio em produção, adicione o arquivo em `public/genio.png`.
+
+
+## Música da viagem (Spotify)
+
+A playlist está embutida no layout global (rodapé fixo) com `autoplay=1`.
+Como o player fica fora das rotas, ao navegar entre `#/`, `#/mapa` e `#/desejos` a música tende a continuar sem reiniciar.
+
+> Observação: alguns navegadores podem bloquear autoplay até a primeira interação do usuário.
